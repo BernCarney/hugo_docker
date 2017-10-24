@@ -1,6 +1,6 @@
 # ---- Import parent image ---- #
 # I chose Alpine Linux because it is a barebones linux distro (~5MB) with package management
-FROM apline:latest
+FROM apline
 
 # ---- Set label(s) ---- #
 LABEL maintainer="Bern Carney"
