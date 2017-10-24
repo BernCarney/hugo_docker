@@ -18,14 +18,11 @@ ENV BINARY hugo_${VERSION}_Linux-64bit
 # ---- Get Hugo, create user/group, and cleanup afterwards ---- #
 RUN mkdir -p /usr/local/src \
   && cd /usr/local/src \
-
   && curl -L https://github.com/gohugoio/hugo/releases/download/v${VERSION}/${BINARY}.tar.gz > /tmp/${BINARY}.tar.gz \
   && tar -xzf /tmp/${BINARY}.tar.gz \
   && mv hugo /usr/local/bin/hugo \
-
   && addgroup -Sg 1231 hugo \
   && adduser -SG hugo -u 1231 -h /src hugo \
-
   && rm /tmp/${BINARY}.tar.gz /usr/local/src/LICENSE.md /usr/local/src/README.md \
   && apk del build_deps
 
