@@ -1,17 +1,25 @@
 # ---- Import parent image ---- #
 # I chose Alpine Linux because it is a barebones linux distro (~5MB) with package management
+# To prevent unforseen problems I decided not to use 'latest' to be able to test new changes without it being automatically pulled
+# ---- #
 FROM alpine:3.6
 
 # ---- Set label(s) ---- #
 LABEL maintainer="Bern Carney"
 
 # ---- Install required packages &  virtual dependencies to build the docker image ---- #
-# required packages will remain after image is built, virtual dependencies will not
+# Required packages that will remain after image is built
+#   -git
+# Virtual dependencies that will not remain after image is built
+#   -curl
+# ---- #
 RUN apk --no-cache add git \
   && apk --no-cache add --virtual build_deps curl
 
 # ---- Setup environmental variables ---- #
-# official gohugo releases https://github.com/gohugoio/hugo/releases/download/v0.30.2/hugo_0.30.2_Linux-64bit.tar.gz
+# official gohugo releases for linux-64bit
+#  -https://github.com/gohugoio/hugo/releases/download/v0.XX.X/hugo_0.XX.X_Linux-64bit.tar.gz
+# ---- #
 ENV VERSION 0.30.2
 ENV BINARY hugo_${VERSION}_Linux-64bit
 
