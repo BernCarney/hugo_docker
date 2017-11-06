@@ -10,11 +10,12 @@ LABEL maintainer="Bern Carney"
 # ---- Install required packages &  virtual dependencies to build the docker image ---- #
 # Required packages that will remain after image is built
 #   -git
+#   -tzdata
 # Virtual dependencies that will not remain after image is built
 #   -curl
 # ---- #
-RUN apk --no-cache add git \
-  && apk --no-cache add --virtual build_deps curl
+RUN apk add --no-cache git tzdata \
+  && apk add --no-cache --virtual build_deps curl
 
 # ---- Setup environmental variables ---- #
 # official gohugo releases for linux-64bit
@@ -22,6 +23,9 @@ RUN apk --no-cache add git \
 # ---- #
 ENV VERSION 0.30.2
 ENV BINARY hugo_${VERSION}_Linux-64bit
+ENV HUGO_USER hugo
+ENV HUGO_HOME /src
+ENV TZ UTC
 
 # ---- Get Hugo, create user/group, and cleanup afterwards ---- #
 RUN mkdir -p /usr/local/src \
@@ -30,12 +34,21 @@ RUN mkdir -p /usr/local/src \
   && tar -xzf /tmp/${BINARY}.tar.gz \
   && mv hugo /usr/local/bin/hugo \
   && addgroup -Sg 1231 hugo \
-  && adduser -SG hugo -u 1231 -h /src hugo \
+  && adduser -SG $HUGO_USER -u 1231 -h $HUGO_HOME $HUGO_USER \
+  && chown -R $HUGO_USER:$HUGO_USER $HUGO_HOME \
+  && cp /usr/share/zoneinfo/${TZ} /etc/localtime \
   && rm /tmp/${BINARY}.tar.gz /usr/local/src/LICENSE.md /usr/local/src/README.md \
   && apk del build_deps
 
 # ---- Set working directory ---- #
-WORKDIR /src
+WORKDIR $HUGO_HOME
 
-# ---- Set intended image port ---- #
-EXPOSE 4040
+# ---- Set user ---- #
+USER $HUGO_USER
+
+# ---- Set intended image port and volume ---- #
+EXPOSE 1313
+VOLUME $HUGO_HOME
+
+# ---- Create entrypoint so that default command is hugo <args> --- #
+ENTRYPOINT ["hugo"]
