@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  hugo:
+    volumes_from:
+      - hugo-sync:/src:nocopy
+
+# sync container names
+volumes:
+  hugo-sync:
+    external: true
