@@ -1,0 +1,12 @@
+version: "2"
+
+options:
+  verbose: true
+# define the containers we would like to sync
+syncs:
+  hugo-sync:
+    sync_args: ['-perms=0']
+    src: './' # host directory
+    sync_host_ip: '0.0.0.0' # possible that it's 0.0.0.0 (test)
+    sync_strategy: 'unison'
+    sync_excludes: ['.gitignore', '.git/*']

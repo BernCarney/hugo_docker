@@ -1,0 +1,9 @@
+version: "2"
+
+services:
+  hugo:
+    image: bernc/hugo_lean
+    ports:
+      - 1313:1313
+    container_name: 'hugo-site'
+    command: ['server', '--bind=0.0.0.0']
