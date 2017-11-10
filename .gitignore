@@ -1,7 +1,8 @@
-windows_images/
 *.bak
 *.rb
 example-site/public
 example-site/drafts
 .* !.gitignore
 example-site/themes/hugo-future-imperfect
+example-site/.docker-sync
+*.ash_history
